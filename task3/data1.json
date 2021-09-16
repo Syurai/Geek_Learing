@@ -1,0 +1,46 @@
+[{
+        "id": "1",
+        "name": "Electronics1",
+        "img": "./img/product/electronics/1.jpg",
+        "star": 4,
+        "newPrice": "$262.00",
+        "oldPrice": "",
+        "type": "0"
+    },
+    {
+        "id": "2",
+        "name": "Electronics2",
+        "img": "./img/product/electronics/1.jpg",
+        "star": 3,
+        "newPrice": "$230.00",
+        "oldPrice": "$290.00",
+        "type": "1"
+    },
+    {
+        "id": "3",
+        "name": "Electronics3",
+        "img": "./img/product/electronics/2.jpg",
+        "star": 5,
+        "newPrice": "$120.00",
+        "oldPrice": "$300.00",
+        "type": "0"
+    },
+    {
+        "id": "4",
+        "name": "Electronics4",
+        "img": "./img/product/electronics/3.jpg",
+        "star": 2,
+        "newPrice": "$230.00",
+        "oldPrice": "$260.00",
+        "type": "1"
+    },
+    {
+        "id": "5",
+        "name": "Electronics5",
+        "img": "./img/product/electronics/4.jpg",
+        "star": 1,
+        "newPrice": "$120.00",
+        "oldPrice": "$140.00",
+        "type": "1"
+    }
+]

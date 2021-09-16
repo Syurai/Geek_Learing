@@ -1,0 +1,292 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    height: 70px;
+    margin-top: 50px;
+    border-top: 3px solid orange;
+    border-right: 0.5px solid grey;
+    border-left: 0.5px solid grey;
+}
+
+header::after {
+    content: "";
+    display: block;
+    clear: both;
+}
+
+header div {
+    float: left;
+}
+
+.logo {
+    width: 40%;
+    height: 100%;
+    font-size: 20px;
+    line-height: 70px;
+}
+
+.logo_img {
+    width: 70px;
+    height: 100%;
+    text-align: center;
+    line-height: 80px;
+    margin-right: 10px;
+    background-color: orange;
+}
+
+.navigation_bar {
+    width: 59.9%;
+    height: 100%;
+    font-size: 15px;
+}
+
+.navigation_bar li {
+    list-style: none;
+    float: left;
+    width: 225px;
+    height: 70px;
+    line-height: 70px;
+}
+
+.navigation_bar ul::after {
+    content: "";
+    display: block;
+    clear: both;
+}
+
+.select {
+    width: 24.9%;
+    height: 100%;
+    line-height: 80px;
+    border-left: 0.5px solid grey;
+}
+
+.select_selected {
+    background-color: orange;
+    color: white;
+}
+
+.select_img {
+    width: 50px;
+    height: 100%;
+}
+
+.select_img img {
+    width: 50px;
+    height: 50px;
+    margin-top: 12px;
+}
+
+main {
+    height: 580px;
+    border: 0.5px solid grey;
+}
+
+main::after {
+    content: "";
+    display: block;
+    clear: both;
+}
+
+main div {
+    height: 100%;
+    float: left;
+}
+
+.left {
+    width: 30%;
+    margin-left: -100%;
+}
+
+.left img {
+    width: 100%;
+    height: 100%;
+}
+
+.middle {
+    width: 100%;
+    height: 100%;
+}
+
+.middle section {
+    margin-left: 30%;
+    height: 100%;
+}
+
+.product_special {
+    width: 40.5%;
+    height: 100%;
+    border-left: 0.5px solid grey;
+    border-right: 0.5px solid grey;
+    font-size: 30px;
+}
+
+.product_normal {
+    width: 29.5%;
+    height: 49.9%;
+    font-size: 20px;
+}
+
+.normal1 {
+    border-right: 0.5px solid grey;
+    border-bottom: 0.5px solid grey;
+}
+
+.normal2 {
+    border-bottom: 0.5px solid grey;
+}
+
+.normal3 {
+    border-right: 0.5px solid grey;
+}
+
+.pro_new {
+    width: 50px;
+    height: 25px;
+    font-size: 15px;
+    text-align: center;
+    line-height: 25px;
+    color: white;
+    border: 0.5px solid orange;
+    border-radius: 5px;
+    background-color: orange;
+    margin-left: 10px;
+}
+
+.product_special .pro_new {
+    margin-top: -80%;
+}
+
+.product_normal .pro_new {
+    margin-top: -55%;
+    margin-left: 5px;
+}
+
+.pro_sale {
+    width: 50px;
+    height: 25px;
+    font-size: 15px;
+    text-align: center;
+    line-height: 25px;
+    color: white;
+    border: 0.5px solid grey;
+    border-radius: 5px;
+    background-color: grey;
+    margin-left: 10px;
+}
+
+.product_special .pro_sale {
+    margin-top: -80%;
+}
+
+.product_normal .pro_sale {
+    margin-top: -55%;
+    margin-left: 5px;
+}
+
+.img_main {
+    width: 100%;
+    height: 60%;
+}
+
+.img_main img {
+    width: 99%;
+    height: 100%;
+    margin: 0.1px;
+}
+
+.pro_name {
+    width: 100%;
+    height: 10%;
+    line-height: 160%;
+}
+
+.pro_star {
+    width: 100%;
+    height: 10%;
+}
+
+.pro_price {
+    width: 100%;
+    height: 10%;
+}
+
+.product_special .pro_price_new {
+    width: 120px;
+    height: 100%;
+    line-height: 200%;
+    border-bottom: 0.5px solid grey;
+}
+
+.product_normal .pro_price_new {
+    width: 80px;
+    height: 100%;
+    line-height: 130%;
+    border-bottom: 0.5px solid grey;
+}
+
+.product_special .pro_price_old {
+    width: 80px;
+    height: 100%;
+    font-size: 20px;
+    line-height: 330%;
+    text-decoration: line-through;
+}
+
+.product_normal .pro_price_old {
+    width: 60px;
+    height: 100%;
+    font-size: 15px;
+    line-height: 170%;
+    text-decoration: line-through;
+}
+
+.pro_other {
+    width: 100%;
+    height: 10%;
+}
+
+.cart {
+    width: 80%;
+    height: 100%;
+    font-size: 13px;
+}
+
+.product_special .cart {
+    line-height: 350%;
+}
+
+.product_normal .cart {
+    line-height: 220%;
+}
+
+.cart_img {
+    width: 20px;
+    height: 100%;
+}
+
+.cart_img img {
+    width: 15px;
+    height: 15px;
+}
+
+.product_special .cart_img img {
+    margin-top: 75%;
+}
+
+.product_normal .cart_img img {
+    margin-top: 35%;
+}
+
+.back {
+    width: 10%;
+    height: 100%;
+}
+
+.black_heart {
+    width: 10%;
+    height: 100%;
+}
