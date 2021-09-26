@@ -1,0 +1,91 @@
+PS C:\WINDOWS\system32> sb -u http://localhost:8801 -c 40 -N 30
+Starting at 2021/9/26 22:28:34
+[Press C to stop the test]
+79217   (RPS: 1865.9)
+---------------Finished!----------------
+Finished at 2021/9/26 22:29:17 (took 00:00:42.6982057)
+Status 200:    69427
+Status 303:    9790
+
+RPS: 2535.4 (requests/second)
+Max: 4242ms
+Min: 0ms
+Avg: 3.2ms
+
+  50%   below 0ms
+  60%   below 0ms
+  70%   below 0ms
+  80%   below 2ms
+  90%   below 7ms
+  95%   below 12ms
+  98%   below 20ms
+  99%   below 26ms
+99.9%   below 97ms
+PS C:\WINDOWS\system32> sb -u http://localhost:8802 -c 40 -N 30
+Starting at 2021/9/26 22:31:52
+[Press C to stop the test]
+71131   (RPS: 1973.4)
+---------------Finished!----------------
+Finished at 2021/9/26 22:32:28 (took 00:00:36.1358437)
+Status 200:    65129
+Status 303:    6002
+
+RPS: 2286.4 (requests/second)
+Max: 592ms
+Min: 0ms
+Avg: 4.1ms
+
+  50%   below 1ms
+  60%   below 1ms
+  70%   below 3ms
+  80%   below 6ms
+  90%   below 11ms
+  95%   below 15ms
+  98%   below 24ms
+  99%   below 31ms
+99.9%   below 155ms
+PS C:\WINDOWS\system32> sb -u http://localhost:8803 -c 40 -N 30
+Starting at 2021/9/26 22:34:44
+[Press C to stop the test]
+95710   (RPS: 2648.8)
+---------------Finished!----------------
+Finished at 2021/9/26 22:35:20 (took 00:00:36.2143249)
+Status 200:    78660
+Status 303:    17058
+
+RPS: 3078 (requests/second)
+Max: 180ms
+Min: 0ms
+Avg: 2.1ms
+
+  50%   below 0ms
+  60%   below 0ms
+  70%   below 0ms
+  80%   below 2ms
+  90%   below 7ms
+  95%   below 12ms
+  98%   below 20ms
+  99%   below 27ms
+99.9%   below 64ms
+PS C:\WINDOWS\system32> sb -u http://localhost:8808 -c 40 -N 30
+Starting at 2021/9/26 22:37:29
+[Press C to stop the test]
+155873  (RPS: 4417)
+---------------Finished!----------------
+Finished at 2021/9/26 22:38:04 (took 00:00:35.3585326)
+Status 200:    155874
+
+RPS: 5013.8 (requests/second)
+Max: 439ms
+Min: 0ms
+Avg: 0.4ms
+
+  50%   below 0ms
+  60%   below 0ms
+  70%   below 0ms
+  80%   below 0ms
+  90%   below 0ms
+  95%   below 1ms
+  98%   below 5ms
+  99%   below 7ms
+99.9%   below 22ms
