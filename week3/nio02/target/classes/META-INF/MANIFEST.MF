@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Implementation-Title: netty-gateway
+Implementation-Version: 0.0.1-SNAPSHOT
+Built-By: syurai
+Implementation-Vendor-Id: io.github.kimmking
+Build-Jdk: 1.8.0_212
+Implementation-URL: https://projects.spring.io/spring-boot/#/spring-bo
+ ot-starter-parent/netty-gateway
+Created-By: Maven Integration for Eclipse
+
