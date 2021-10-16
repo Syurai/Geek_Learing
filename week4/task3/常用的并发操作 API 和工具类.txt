@@ -1,0 +1,220 @@
+线程生命周期相关
+
+Java线程在运行的生命周期中可能处于如下6种不同的状态，在给定的一个时刻，线程只能处于其中的一个状态。
+线程状态	       说明
+NEW	初始状态，     线程刚被创建，但是并未启动（还未调用start方法）。
+RUNNABLE	       运行状态，JAVA线程将操作系统中的就绪（READY）和运行（RUNNING）两种状态笼统地称为“运行中”。
+BLOCKED	           阻塞状态，表示线程阻塞于锁。
+WAITING	           等待状态，表示该线程无限期等待另一个线程执行一个特别的动作。
+TIMED_WAITING	   超时等待状态，不同于WAITING的是，它可以在指定时间自动返回。
+TERMINATED	       终止状态，表示当前状态已经执行完毕。
+
+线程在自身的生命周期中，并不是固定地处于某个状态，而是随着代码的执行在不同的状态之间进行切换。
+
+java.lang.Thread中重要属性/方法：
+重要属性/方法	                           说明
+volatile String name;	                   线程名称-诊断分析使用。
+boolean daemon = false;	                   后台守护线程标志 – 决定JVM优雅关闭
+Runnable target;	                       任务(只能通过构造函数传入)
+synchronized void start()	              【协作】启动新线程并自动执行
+void join()	                              【协作】等待某个线程执行完毕（来汇合）
+static native Thread currentThread();	   静态方法: 获取当前线程信息
+static native void sleep(long millis);	   静态方法: 线程睡眠并让出CPU时间片
+static native void yield()	               静态方法：线程进入READY就绪状态
+void interrupt()	                       中断线程
+
+java.lang.Object中重要方法：
+Object中方法	                       说明
+void wait()	                           放弃锁+等待0ms+尝试获取锁;
+void wait(long timeout, int nanos)	   放弃锁 + wait + 到时间自动唤醒/中途唤醒 (精度: nanos>0则 timeout++)
+native void wait(long timeout);	       放弃锁+ wait + 到时间自动唤醒/中途被唤醒 (唤醒之后需要自动获取锁)
+native void notify();	               发送信号通知1个等待线程
+native void notifyAll();	           发送信号通知所有等待线程
+
+java.util.concurrent.locks.LockSupport中重要方法：
+LockSupport中方法	           说明
+void park()	                   无限性暂停当前线程
+void unpark(Thread thread)	   恢复当前线程
+
+
+线程池相关
+
+线程池：其实是一种线程使用模式，解决线程频繁开启、关闭带来的性能开销问题。
+使用线程池的好处是减少在创建和销毁线程上所花的时间以及系统资源的开销，解决资源不足的问题。
+如果不使用线程池，有可能造成系统创建大量同类线程而导致消耗完内存或者“过度切换”的问题。
+
+提供了Excutor、ExcutorService
+
+Executor – 执行者:
+重要方法	                       说明
+void execute(Runnable command);	   执行可运行的任务
+
+ExecutorService：
+重要方法	                                 说明
+void execute(Runnable command);	             执行可运行的任务
+void shutdown();	                         停止接收新任务，原来的任务继续执行
+List shutdownNow();	                         停止接收新任务，原来的任务停止执行
+Future submit(Runnable task);	             提交任务; 允许获取执行结果
+Future submit(Runnable task, T result);	     提交任务（指定结果）; 控制|获取执行结果
+Future submit(Callable task);	             提交任务; 允许控制任务和获取执行结果
+boolean awaitTermination(timeOut, unit)	     阻塞当前线程，返回是否线程都执行完
+
+
+线程安全关键字
+synchronized
+
+synchronized采用互斥同步（Mutual Exclusion & Synchnronization）的方式，让多个线程并发访问共享数据时，
+保证共享数据在同一时刻只被一个（或一些，使用信号量的时候）线程使用。互斥是实现同步的一种手段，临界区、互斥量和信号量都是主要的互斥实现方式。
+
+JDK 1.6为了减少获得锁和释放锁带来的性能消耗，引入了“偏向锁”和“轻量级锁”。
+所以，目前锁一共有4种状态，级别从低到高依次是：无锁状态、偏向锁状态、轻量级锁状态和重量级锁状态，这几个状态会随着竞争情况逐渐升级。
+锁可以升级但不能降级，意味着偏向锁升级成轻量级锁后不能降级成偏向锁。这种锁升级却不能降级的策略，目的是为了提高获得锁和释放锁的效率。
+
+这4种锁并不是相互替代的关系，它们只是在不同场景下的不同选择。
+
+偏向锁	   加锁和解锁不需要额外消耗，和执行非同步方法相比仅仅存在纳秒级的差距。线程间存在锁竞争，会带来额外的锁撤销的消耗。适用于只有一个线程访问同步块场景。
+轻量级锁   竞争的线程不会阻塞，提高了线程的响应速度。如果始终得不到锁竞争的线程，使用自旋会消耗CPU。追求响应速度，同步块执行速度非常快。
+重量级锁   线程竞争不会使用自旋，不会消耗CPU。线程阻塞，响应时间缓慢。追求吞吐量，同步块执行时间较长。
+
+
+volatile
+
+一旦一个共享变量（类的成员变量、类的静态成员变量）被volatile修饰之后，那么就具备了两层语义：
+
+（1）保证了不同线程对这个变量进行操作时的可见性，即一个线程修改了某个变量的值，这新值对其他线程来说是立即可见的。
+
+（2）禁止进行指令重排序。
+
+volatile（表示易变关键字的意思），它要求线程必须从主内存中获取变量的值，线程操作 volatile 变量都是直接操作主内存。它遵循happen-before规则来禁止指令重排。
+
+
+Lock锁机制类
+
+使用synchronized的局限性有：
+
+    当多个线程读写文件时，读操作与读操作之间不会发生冲突。但采用synchronized关键字实现同步时，还是只能一个线程进行读操作，其他读线程只能等待锁的释放而无法进行读操作。
+因此，需要一种机制来保证多线程都只是进行读操作时，线程之间不会发生冲突(解决方案：ReentrantReadWriteLock) 。
+    synchronized同步块无法异步处理锁（即不能立即知道是否可以拿到锁） (解决方案：ReentrantLock)。
+    同步块无法根据条件灵活的加锁解锁（即只能跟同步块范围一致）。
+    同步块的阻塞无法中断（不能 Interruptibly）。
+    同步块的阻塞无法控制超时（无法自动解锁）。
+
+
+Lock
+
+Lock 锁使用方式方式灵活可控，性能开销小，其锁工具包位于java.util.concurrent.locks下。
+重要方法	                                              说明
+void lock()	                                              获取锁; 类比 synchronized (lock)
+void lockInterruptibly() throws InterruptedException	  获取锁; 允许打断;
+boolean tryLock(long time, TimeUnit unit)	              尝试获取锁; 成功则返回 true; 超时则退出
+boolean tryLock()	                                      尝试【无等待】获取锁; 成功则返回
+true void unlock()	                                      解锁；要求当前线程已获得锁; 类比同步块结束
+Condition newCondition()	                              新增一个绑定到当前Lock的条件
+
+
+ReentrantLock
+
+ReentrantLock是Lock接口的主要实现类，ReentrantLock是可重入锁，顾名思义，就是支持重进入的锁，它表示该锁能够支持一个线程对资源的重复加锁。
+
+可重入锁又名递归锁。可重入指的是任意线程在获取到锁之后能够再次获取该锁而不会被锁所阻塞（前提锁对象得是同一个对象或者class）。
+Java中ReentrantLock和synchronized都是可重入锁，可重入锁的一个优点是可一定程度避免死锁。
+
+公平锁是指多个线程按照申请锁的顺序来获取锁，线程直接进入队列中排队，队列中的第一个线程才能获得锁（不可插队，等待时间越长，请求锁时会被优先满足）。
+公平锁的优点是等待锁的线程不会饥饿。缺点是整体吞吐效率相对非公平锁要低，等待队列中除第一个线程以外的所有线程都会阻塞，CPU唤醒阻塞线程的开销比非公平锁大。
+
+非公平锁是多个线程加锁时直接尝试获取锁，获取不到才会到等待队列的队尾等待（可插队的）。
+但如果此时锁刚好可用，那么这个线程可以无需阻塞直接获取到锁，所以非公平锁有可能出现后申请锁的线程先获取锁的场景。
+非公平锁的优点是可以减少唤起线程的开销，整体的吞吐效率高，因为线程有几率不阻塞直接获得锁，CPU不必唤醒所有线程。缺点是处于等待队列中的线程可能会饥饿，或者等很久才会获得锁。
+
+
+ReadWriteLock
+
+ReadWriteLock 管理一组锁，一个读锁，一个写锁。 读锁可以在没有写锁的时候被多个线程同时持有，写锁是独占的。 
+所有读写锁的实现必须确保写操作对读操作的内存影响。每次只能有一个写线程，但是同时可以有多个线程并发地读数据。ReadWriteLock 适用于读多写少的并发情况。
+
+
+Atomic原子类
+Atomic类型	类名
+基本类型	AtomicInteger：整型原子类
+            AtomicLong：长整型原子类
+            AtomicBoolean ：布尔型原子类
+数组类型	AtomicIntegerArray：整型数组原子类
+            AtomicLongArray：长整型数组原子类
+            AtomicReferenceArray ：引用类型数组原子类
+引用类型	AtomicReference：引用类型原子类
+            AtomicMarkableReference：原子更新带有标记的引用类型
+            AtomicStampedReference ：原子更新带有版本号的引用类型
+对象的属性修改类型	AtomicIntegerFieldUpdater：原子更新整型字段的更新器
+                    AtomicLongFieldUpdater：原子更新长整型字段的更新器
+                    AtomicReferenceFieldUpdater：原子更新引用类型里的字段
+原子累加器	DoubleAccumulator、DoubleAdder、LongAccumulator、LongAdder
+
+    核心实现原理：
+
+    volatile 保证读写操作都可见（注意不保证原子）；使用 CAS 指令，作为乐观锁实现，通过自旋重试保证写入。
+
+例如AtomicInteger类常用方法有：
+方法	                                         描述
+get()	                                         获取当前的值
+getAndSet(int newValue)	                         获取当前的值，并设置新的值
+getAndIncrement()	                             获取当前的值，并自增
+getAndDecrement()	                             获取当前的值，并自减
+getAndAdd(int delta)	                         获取当前的值，并加上预期的值
+boolean compareAndSet(int expect, int update)	 如果输入的数值等于预期值，则以原子方式将该值设置为输入值（update）
+lazySet(int newValue)	                         最终设置为newValue,使用 lazySet 设置之后可能导致其他线程在之后的一小段时间内还是可以读到旧的值。
+
+
+常见并发工具类
+AQS(队列同步器)
+
+AQS 的全称为（AbstractQueuedSynchronizer），中文即“队列同步器”，它是构建锁或者其他同步组件的基础， 是JUC 并发包中的核心基础组件，抽象了竞争的资源和线程队列。
+
+两种资源共享方式: 独占 | 共享，子类负责实现公平 OR 非公平。
+
+
+Semaphore(信号量)
+
+Semaphore用来控制同时访问特定资源的线程数量，它通过协调各个线程，以保证合理的使用公共资源。
+synchronized和ReetrantLock都是一次只允许访问某个资源，而Semaphore可以指定多个线程同时访问某个资源（准入数量 N, N =1 则等价于独占锁）。
+
+
+CountDownLatch (倒计时器)
+
+CountDownLatch是一种同步辅助工具，它允许一个或多个线程等待其他线程完成操作（阻塞主线程，N 个子线程满足条件时主线程继续）。
+
+CountDownLatch是通过一个计数器来实现的，计数器的初始化值为线程的数量。每当一个线程完成了自己的任务后，计数器的值就相应得减1。
+当计数器到达0时，表示所有的线程都已完成任务，然后在闭锁上等待的线程就可以恢复执行任务。
+
+CountDownLatch的方法：
+方法	                               描述
+await()	                               调用该方法的线程等到构造方法传入的 N 减到 0 的时候，才能继续往下执行。
+await(long timeout, TimeUnit unit)	   调用该方法的线程等到指定的 timeout 时间后，不管 N 是否减至为 0，都会继续往下执行。
+countDown()	                           使 CountDownLatch 初始值 N 减 1。
+getCount()	                           获取当前 CountDownLatch 维护的值，也就是AQS的state的值。
+
+
+CyclicBarrier(循环栅栏)
+
+CyclicBarrier的字面意思是可循环使用（Cyclic）的屏障（Barrier）。它要做的事情是，让一组线程到达一个屏障（也可以叫同步点）时被阻塞，
+直到最后一个线程到达屏障时，屏障才会开门，所有被屏障拦截的线程才会继续运行（任务执行到一定阶段, 等待其他任务对齐，阻塞 N 个线程时所有线程被唤醒继续）。
+
+CyclicBarrier常用方法：
+常用方法	                          描述
+await()	                              在所有线程都已经在此 barrier上并调用 await 方法之前，将一直等待。
+await(long timeout, TimeUnit unit)	  所有线程都已经在此屏障上调用 await 方法之前将一直等待，或者超出了指定的等待时间。
+getNumberWaiting()	                  返回当前在屏障处等待的线程数目。
+getParties()	                      返回要求启动此 barrier 的线程数目。
+isBroken()	                          查询此屏障是否处于损坏状态。
+reset()	                              将屏障重置为其初始状态。
+
+
+CyclicBarrier和CountDownLatch的区别
+
+CountDownLatch	                             CyclicBarrier
+在主线程里 await 阻塞并做聚合	             直接在各个子线程里 await 阻塞，回调聚合
+N 个线程执行了countdown，主线程继续	         N个线程执行了 await 时，N 个线程继续
+主线程里拿到同步点	                         回调被最后到达同步点的线程执行
+基于 AQS 实现，state 为 count，递减到0	     基于可重入锁 condition.await/signalAll实现
+不可以复用	                                 计数为0时重置为 N，可以复用
+
+
